@@ -23,7 +23,7 @@ def end(game_state: typing.Dict):
 def move(game_state: typing.Dict):
     
     
-    return Move.UP
+    return Move.UP.value
 
 
 
