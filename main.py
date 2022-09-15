@@ -1,4 +1,5 @@
 import typing
+from utils.utils import Move
 
 def info() -> typing.Dict:
     print("INFO")
@@ -20,9 +21,9 @@ def end(game_state: typing.Dict):
     print(game_state)
 
 def move(game_state: typing.Dict):
-    print("Moving...")
-    print(game_state)
-    return "up"
+    
+    
+    return Move.UP
 
 
 
