@@ -15,13 +15,13 @@ class Snake():
 
     def getMoves(self):
         moves = []
-        if self.head.x > self.neck.x:
+        if self.head.x >= self.neck.x:
             moves.append(Move.RIGHT)
-        if self.head.x < self.neck.x:
+        if self.head.x <= self.neck.x:
             moves.append(Move.LEFT)
-        if self.head.y > self.neck.y:
+        if self.head.y >= self.neck.y:
             moves.append(Move.UP)
-        if self.head.y < self.neck.y:
+        if self.head.y <= self.neck.y:
             moves.append(Move.DOWN)
         return moves
 
