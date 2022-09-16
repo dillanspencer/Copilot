@@ -12,11 +12,11 @@ def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
     for i in range(1, depth):
         if time.time() - startTime > 0.350:
             return bestMove
-        bestMove = maxN(mySnake, enemySnakes, food, i, -math.inf, math.inf)
+        bestMove = maxN(mySnake, enemySnakes, food, i, -math.inf, math.inf, i)
     return bestMove
 
 # maxN algorithm with alpha beta pruning
-def maxN(mySnake, enemySnakes, food, depth, alpha, beta) -> Move:
+def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth) -> Move:
     if depth == 0:
         return heuristic(mySnake, enemySnakes, food)
     bestValue = -math.inf
@@ -27,20 +27,20 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta) -> Move:
         newEnemySnakes = copy.deepcopy(enemySnakes)
         for enemySnake in newEnemySnakes:
             enemySnake.move(random.choice(enemySnake.getMoves()))
-        value = minN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta)
+        value = minN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnDepth)
         if value > bestValue:
             bestValue = value
             bestMove = move
         alpha = max(alpha, bestValue)
         if alpha >= beta:
             break
-    if depth == 4:
+    if depth == returnDepth:
         print("returning...")
         return bestMove
     return bestValue
 
 # minN algorithm with alpha beta pruning
-def minN(mySnake, enemySnakes, food, depth, alpha, beta):
+def minN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth):
     if depth == 0:
         return heuristic(mySnake, enemySnakes, food)
     bestValue = math.inf
@@ -50,7 +50,7 @@ def minN(mySnake, enemySnakes, food, depth, alpha, beta):
             newEnemySnakes = copy.deepcopy(enemySnakes)
             for enemySnake in newEnemySnakes:
                 enemySnake.move(move)
-            value = maxN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta)
+            value = maxN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnDepth)
             bestValue = min(bestValue, value)
             beta = min(beta, bestValue)
             if alpha >= beta:
