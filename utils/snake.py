@@ -7,9 +7,9 @@ class Snake():
     
     def __init__(self, body):
         self.body = [Point(point["x"], point["y"]) for point in body]
-        self.head = json.loads(body[0])
-        self.neck = json.loads(body[1])
-        self.tail = json.loads(body[len(body) - 1])
+        self.head = Point(body[0]["x", body[0]["y"]])
+        self.neck = Point(body[1]["x", body[1]["y"]])
+        self.tail = Point(body[len(body) - 1]["x", body[len(body) - 1]["y"]])
         self.alive = True
         self.score = 0
 
@@ -36,8 +36,8 @@ class Snake():
             self.head.y += 1
         self.body.insert(0, self.head)
         self.body.pop()
-        self.neck = json.loads(self.body[1])
-        self.tail = json.loads(self.body[len(self.body) - 1])
+        self.neck = Point(self.body[1]["x"], self.body[1]["y"])
+        self.tail = Point(self.body[len(self.body) - 1]["x"], self.body[len(self.body) - 1]["y"])
 
     def eat(self):
         self.body.append(self.tail)
