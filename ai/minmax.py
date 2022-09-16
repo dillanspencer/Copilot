@@ -21,7 +21,7 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth) -> Move:
         return heuristic(mySnake, enemySnakes, food)
     bestValue = -math.inf
     bestMove = None
-    for move in mySnake.getMoves():
+    for move in mySnake.getMoves(enemySnakes):
         newMySnake = copy.deepcopy(mySnake)
         newMySnake.move(move)
         newEnemySnakes = copy.deepcopy(enemySnakes)
