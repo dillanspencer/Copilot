@@ -29,7 +29,7 @@ def move(game_state: typing.Dict):
     food = game_state["board"]["food"]
 
     board = Board(11, 11, enemySnakes, food, mySnake)
-    move = iterativeDeepening(mySnake, enemySnakes=enemySnakes, food=food, board=board)
+    move = iterativeDeepening(mySnake, enemySnakes=enemySnakes, food=food, depth=10)
 
     return move
 
