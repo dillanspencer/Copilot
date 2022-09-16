@@ -16,13 +16,13 @@ class Snake():
     def getMoves(self):
         moves = []
         if self.head.x > self.neck.x:
-            moves.append(Move.LEFT)
-        if self.head.x < self.neck.x:
             moves.append(Move.RIGHT)
+        if self.head.x < self.neck.x:
+            moves.append(Move.LEFT)
         if self.head.y > self.neck.y:
-            moves.append(Move.DOWN)
-        if self.head.y < self.neck.y:
             moves.append(Move.UP)
+        if self.head.y < self.neck.y:
+            moves.append(Move.DOWN)
         return moves
 
     def move(self, move):
@@ -31,9 +31,9 @@ class Snake():
         if move == Move.RIGHT:
             self.head.x += 1
         if move == Move.UP:
-            self.head.y -= 1
-        if move == Move.DOWN:
             self.head.y += 1
+        if move == Move.DOWN:
+            self.head.y -= 1
         self.body.insert(0, self.head)
         self.body.pop()
         self.neck = Point(self.body[1].x, self.body[1].y)
