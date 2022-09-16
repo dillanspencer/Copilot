@@ -1,13 +1,17 @@
 import random
 import copy
 import math
+import time
 from utils.snake import Snake
 from utils.utils import Move
 
 # iterative deepening algorithm using maxN algorithm with alpha beta pruning
 def iterativeDeepening(mySnake, enemySnakes, food, depth):
-    bestMove = None
+    bestMove = Move.UP
+    startTime = time.time()
     for i in range(1, depth):
+        if time.time() - startTime > 0.350:
+            return bestMove
         bestMove = maxN(mySnake, enemySnakes, food, i, -math.inf, math.inf)
     return bestMove
 
