@@ -36,8 +36,8 @@ class Snake():
             self.head.y += 1
         self.body.insert(0, self.head)
         self.body.pop()
-        self.neck = Point(self.body[1]["x"], self.body[1]["y"])
-        self.tail = Point(self.body[len(self.body) - 1]["x"], self.body[len(self.body) - 1]["y"])
+        self.neck = self.body[1]
+        self.tail = self.body[len(self.body) - 1]
 
     def eat(self):
         self.body.append(self.tail)
