@@ -9,11 +9,13 @@ from utils.utils import Move, Point
 def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
     bestMove = Move.RIGHT
     startTime = time.time()
+    alpha = -math.inf
+    beta = math.inf
     for i in range(1, depth):
         if time.time() - startTime > 0.150:
             print("time exceeded", i)
             return bestMove
-        bestMove = maxN(mySnake, enemySnakes, food, i, -math.inf, math.inf, i)
+        bestMove, alpha, beta = maxN(mySnake, enemySnakes, food, i, alpha, beta, i)
     print(time.time() - startTime)
     return bestMove
 
