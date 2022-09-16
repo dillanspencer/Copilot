@@ -2,6 +2,7 @@ import random
 import copy
 import math
 from utils.snake import Snake
+from utils.utils import Move
 
 # iterative deepening algorithm using monte carlo tree search
 def iterativeDeepening(snake: Snake, enemySnakes, food, depth):
@@ -30,13 +31,20 @@ def treePolicy(node):
 
 # default policy algorithm
 def defaultPolicy(snake: Snake, enemySnakes, food):
+    reward = 0
     while snake.alive:
         moves = snake.getMoves()
         move = random.choice(moves)
         snake.move(move)
         for enemy in enemySnakes:
-            enemy.move(enemy.getMoves())
-    return snake.score
+            if snake.head == enemy.head:
+                snake.die()
+                break
+        if snake.head in food:
+            snake.eat()
+            reward += 1
+    return reward
+        
 
 # backup algorithm
 def backup(node, reward):
