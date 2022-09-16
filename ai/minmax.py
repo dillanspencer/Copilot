@@ -6,7 +6,7 @@ from utils.snake import Snake
 from utils.utils import Move
 
 # iterative deepening algorithm using maxN algorithm with alpha beta pruning
-def iterativeDeepening(mySnake, enemySnakes, food, depth):
+def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
     bestMove = Move.UP
     startTime = time.time()
     for i in range(1, depth):
@@ -16,11 +16,11 @@ def iterativeDeepening(mySnake, enemySnakes, food, depth):
     return bestMove
 
 # maxN algorithm with alpha beta pruning
-def maxN(mySnake, enemySnakes, food, depth, alpha, beta):
+def maxN(mySnake, enemySnakes, food, depth, alpha, beta) -> Move:
     if depth == 0:
         return heuristic(mySnake, enemySnakes, food)
     bestValue = -math.inf
-    bestMove = None
+    bestMove = Move.UP
     for move in mySnake.getMoves():
         newMySnake = copy.deepcopy(mySnake)
         newMySnake.move(move)
@@ -35,6 +35,7 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta):
         if alpha >= beta:
             break
     if depth == 4:
+        print("returning...")
         return bestMove
     return bestValue
 
