@@ -26,7 +26,6 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta):
         newMySnake.move(move)
         newEnemySnakes = copy.deepcopy(enemySnakes)
         for enemySnake in newEnemySnakes:
-            print(enemySnake.getMoves())
             enemySnake.move(random.choice(enemySnake.getMoves()))
         value = minN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta)
         if value > bestValue:
@@ -60,6 +59,8 @@ def minN(mySnake, enemySnakes, food, depth, alpha, beta):
 
 # heuristic function that takes into account the distance to the closest food, the distance to the closest enemy, and the length of the snake
 def heuristic(mySnake, enemySnakes, food):
-    closestFood = min([mySnake.head.distance(foodPoint) for foodPoint in food])
-    closestEnemy = min([mySnake.head.distance(enemySnake.head) for enemySnake in enemySnakes])
-    return 1 / closestFood + 1 / closestEnemy + 1 + mySnake.length
+    if len(food) == 0:
+        return 0
+    closestFood = min(food, key=lambda x: mySnake.distance(x)) + 1
+    closestEnemy = min(enemySnakes, key=lambda x: mySnake.distance(x)) + 1
+    return 1 / mySnake.distance(closestFood) - 1 / mySnake.distance(closestEnemy) + len(mySnake.body) / 100
