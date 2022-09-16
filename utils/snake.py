@@ -8,8 +8,8 @@ class Snake():
     def __init__(self, body):
         self.body = [Point(point["x"], point["y"]) for point in body]
         self.head = Point(body[0]["x"], body[0]["y"])
-        self.neck = Point(body[1]["x", body[1]["y"]])
-        self.tail = Point(body[len(body) - 1]["x", body[len(body) - 1]["y"]])
+        self.neck = Point(body[1]["x"], body[1]["y"])
+        self.tail = Point(body[len(body) - 1]["x"], body[len(body) - 1]["y"])
         self.alive = True
         self.score = 0
 
