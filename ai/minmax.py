@@ -57,10 +57,14 @@ def minN(mySnake, enemySnakes, food, depth, alpha, beta):
     return bestValue
          
 
-# heuristic function that takes into account the distance to the closest food, the distance to the closest enemy, and the length of the snake
+# heuristic function that takes into account control of the board, distance to enemy snakes and being closer to food than enemy snakes
 def heuristic(mySnake, enemySnakes, food):
-    if len(food) == 0:
-        return 0
-    closestFood = min(food, key=lambda x: mySnake.distance(x)) + 1
-    closestEnemy = min(enemySnakes, key=lambda x: mySnake.distance(x)) + 1
-    return 1 / mySnake.distance(closestFood) - 1 / mySnake.distance(closestEnemy) + len(mySnake.body) / 100
+    mySnakeDistance = 0
+    enemySnakeDistance = 0
+    for enemySnake in enemySnakes:
+        mySnakeDistance += mySnake.head.distance(enemySnake.head)
+    foodDistance = 0
+    for foodPoint in food:
+        foodDistance += mySnake.head.distance(foodPoint)
+        enemySnakeDistance += enemySnake.head.distance(foodPoint)
+    return mySnakeDistance - enemySnakeDistance + foodDistance
