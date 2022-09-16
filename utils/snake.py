@@ -11,6 +11,7 @@ class Snake():
         self.head = Point(body[0]["x"], body[0]["y"])
         self.neck = Point(body[1]["x"], body[1]["y"])
         self.tail = Point(body[len(body) - 1]["x"], body[len(body) - 1]["y"])  
+        self.length = len(body)
 
     def getMoves(self):
         moves = []
