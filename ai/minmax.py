@@ -65,18 +65,14 @@ def minN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth):
 def heuristic(mySnake, enemySnakes, food):
     if mySnake.head.x < 0 or mySnake.head.x == 11 or mySnake.head.y < 0 or mySnake.head.y == 11:
         return -math.inf
-    center = Point(5, 5)
     myHead = mySnake.head
-    myDistance = myHead.distance(center)
-    enemyDistance = 0
+    myDistance = 0
     
     for enemySnake in enemySnakes:
         # check if snake hit enemy body
         if mySnake.head in enemySnake.body:
             return -math.inf
-        enemyDistance += enemySnake.head.distance(center)
-    foodDistance = 0
-    for food in food:
-        foodDistance += myHead.distance(food)
-    return myDistance - enemyDistance - foodDistance
+        myDistance -= myHead.distance(enemySnake.head)
+    
+    return myDistance
     
