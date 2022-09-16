@@ -13,7 +13,7 @@ class Snake():
         self.tail = Point(body[len(body) - 1]["x"], body[len(body) - 1]["y"])  
         self.length = len(body)
 
-    def getMoves(self):
+    def getMoves(self, enemySnakes):
         moves = []
         if self.head.x >= self.neck.x and Point(self.head.x + 1, self.head.y) not in self.body:          
             moves.append(Move.RIGHT)
@@ -23,6 +23,20 @@ class Snake():
             moves.append(Move.UP)
         if self.head.y <= self.neck.y and Point(self.head.x, self.head.y - 1) not in self.body:
             moves.append(Move.DOWN)
+
+        for enemySnake in enemySnakes:
+            if Point(self.head.x + 1, self.head.y) in enemySnake.body:
+                if Move.RIGHT in moves:
+                    moves.remove(Move.RIGHT)
+            if Point(self.head.x - 1, self.head.y) in enemySnake.body:
+                if Move.LEFT in moves:
+                    moves.remove(Move.LEFT)
+            if Point(self.head.x, self.head.y + 1) in enemySnake.body:
+                if Move.UP in moves:
+                    moves.remove(Move.UP)
+            if  Point(self.head.x, self.head.y - 1) in enemySnake.body:
+                if Move.DOWN in moves:
+                    moves.remove(Move.DOWN)
         return moves
 
     def move(self, move):
