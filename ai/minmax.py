@@ -71,7 +71,7 @@ def heuristic(mySnake, enemySnakes, food):
     enemyDistance = 0
     # check if the snake is going to collide with itself
     for i in range(1, len(mySnake.body)):
-        if myHead == mySnake.body[i]:
+        if myHead.distance(mySnake.body[i]) == 0:
             return -math.inf
     for enemySnake in enemySnakes:
         # check if snake hit enemy body
