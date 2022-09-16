@@ -3,7 +3,7 @@ import copy
 import math
 import time
 from utils.snake import Snake
-from utils.utils import Move
+from utils.utils import Move, Point
 
 # iterative deepening algorithm using maxN algorithm with alpha beta pruning
 def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
@@ -60,19 +60,14 @@ def minN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth):
 
 # heuristic function for the minmax algorithm that takes account being close to the center and not moving out of bounds
 def heuristic(mySnake, enemySnakes, food):
-    mySnakeHead = mySnake.head
-    mySnakeBody = mySnake.body
-    mySnakeLength = len(mySnakeBody)
-    mySnakeMoves = mySnake.getMoves()
-    mySnakeMovesLength = len(mySnakeMoves)
-    mySnakeMovesLength = 1 if mySnakeMovesLength == 0 else mySnakeMovesLength
-    enemySnakeLength = 0
-    enemySnakeMovesLength = 0
+    center = Point(5, 5)
+    myHead = mySnake.head
+    myDistance = myHead.distance(center)
+    enemyDistance = 0
     for enemySnake in enemySnakes:
-        enemySnakeLength += len(enemySnake.body)
-        enemySnakeMovesLength += len(enemySnake.getMoves())
-    enemySnakeMovesLength = 1 if enemySnakeMovesLength == 0 else enemySnakeMovesLength
-    foodLength = len(food)
-    foodLength = 1 if foodLength == 0 else foodLength
-    return (mySnakeLength - enemySnakeLength) / (mySnakeMovesLength - enemySnakeMovesLength) + (mySnakeLength - foodLength) / (mySnakeMovesLength - foodLength) + (mySnakeHead.x - 5) ** 2 + (mySnakeHead.y - 5) ** 2
+        enemyDistance += enemySnake.head.distance(center)
+    foodDistance = 0
+    for food in food:
+        foodDistance += myHead.distance(food)
+    return myDistance - enemyDistance - foodDistance
     
