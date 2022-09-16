@@ -11,6 +11,7 @@ def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
     startTime = time.time()
     for i in range(1, depth):
         if time.time() - startTime > 0.350:
+            print("time exceeded", i)
             return bestMove
         bestMove = maxN(mySnake, enemySnakes, food, i, -math.inf, math.inf, i)
     return bestMove
@@ -35,7 +36,6 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth) -> Move:
         if alpha >= beta:
             break
     if depth == returnDepth:
-        print("returning...")
         return bestMove
     return bestValue
 
@@ -58,14 +58,21 @@ def minN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth):
     return bestValue
          
 
-# heuristic function that takes into account control of the board, distance to enemy snakes and being closer to food than enemy snakes
+# heuristic function for the minmax algorithm that takes account being close to the center and not moving out of bounds
 def heuristic(mySnake, enemySnakes, food):
-    mySnakeDistance = 0
-    enemySnakeDistance = 0
+    mySnakeHead = mySnake.head
+    mySnakeBody = mySnake.body
+    mySnakeLength = len(mySnakeBody)
+    mySnakeMoves = mySnake.getMoves()
+    mySnakeMovesLength = len(mySnakeMoves)
+    mySnakeMovesLength = 1 if mySnakeMovesLength == 0 else mySnakeMovesLength
+    enemySnakeLength = 0
+    enemySnakeMovesLength = 0
     for enemySnake in enemySnakes:
-        mySnakeDistance += mySnake.head.distance(enemySnake.head)
-    foodDistance = 0
-    for foodPoint in food:
-        foodDistance += mySnake.head.distance(foodPoint)
-        enemySnakeDistance += enemySnake.head.distance(foodPoint)
-    return mySnakeDistance - enemySnakeDistance + foodDistance
+        enemySnakeLength += len(enemySnake.body)
+        enemySnakeMovesLength += len(enemySnake.getMoves())
+    enemySnakeMovesLength = 1 if enemySnakeMovesLength == 0 else enemySnakeMovesLength
+    foodLength = len(food)
+    foodLength = 1 if foodLength == 0 else foodLength
+    return (mySnakeLength - enemySnakeLength) / (mySnakeMovesLength - enemySnakeMovesLength) + (mySnakeLength - foodLength) / (mySnakeMovesLength - foodLength) + (mySnakeHead.x - 5) ** 2 + (mySnakeHead.y - 5) ** 2
+    
