@@ -63,6 +63,8 @@ def minN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth):
 
 # heuristic function for the minmax algorithm that takes account being close to the center and not moving out of bounds
 def heuristic(mySnake, enemySnakes, food):
+    if mySnake.head.x < 0 or mySnake.head.x == 11 or mySnake.head.y < 0 or mySnake.head.y == 11:
+        return -math.inf
     center = Point(5, 5)
     myHead = mySnake.head
     myDistance = myHead.distance(center)
@@ -72,6 +74,5 @@ def heuristic(mySnake, enemySnakes, food):
     foodDistance = 0
     for food in food:
         foodDistance += myHead.distance(food)
-    print("heuristic", myDistance - enemyDistance - foodDistance)
     return myDistance - enemyDistance - foodDistance
     
