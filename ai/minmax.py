@@ -39,7 +39,7 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth) -> Move:
         if alpha >= beta:
             break
     if depth == returnDepth:
-        return bestMove
+        return bestMove, alpha, beta
     return bestValue
 
 # minN algorithm with alpha beta pruning
