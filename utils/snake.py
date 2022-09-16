@@ -8,7 +8,7 @@ class Snake():
         self.body = body
         self.head = body[0]
         self.neck = body[1]
-        self.tail = body[body.length - 1]
+        self.tail = body[len(body) - 1]
         self.alive = True
         self.score = 0
 
@@ -36,7 +36,7 @@ class Snake():
         self.body.insert(0, self.head)
         self.body.pop()
         self.neck = self.body[1]
-        self.tail = self.body[self.body.length - 1]
+        self.tail = self.body[len(self.body) - 1]
 
     def eat(self):
         self.body.append(self.tail)
