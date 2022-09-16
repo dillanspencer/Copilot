@@ -20,4 +20,4 @@ class Board():
             if snake.id == self.you.id:
                 self.board[snake.head.y][snake.head.x] = Tile.ME
         for food in self.food:
-            self.board[food.y][food.x] = Tile.FOOD
+            self.board[food["x"]][food["y"]] = Tile.FOOD
