@@ -5,7 +5,8 @@ import json
 
 class Snake():
     
-    def __init__(self, body):
+    def __init__(self, id, body):
+        self.id = id
         self.body = [Point(point["x"], point["y"]) for point in body]
         self.head = Point(body[0]["x"], body[0]["y"])
         self.neck = Point(body[1]["x"], body[1]["y"])
@@ -15,8 +16,6 @@ class Snake():
 
     def getMoves(self):
         moves = []
-        print("HEAD: ", self.head.x, self.head.y)
-        print("NECK: ", self.neck.x, self.neck.y)
         if self.head.x > self.neck.x:
             moves.append(Move.RIGHT)
         if self.head.x < self.neck.x:
