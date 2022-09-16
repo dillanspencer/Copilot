@@ -23,6 +23,7 @@ class Snake():
             moves.append(Move.UP)
         if self.head.y < self.neck.y:
             moves.append(Move.DOWN)
+        print("MOVES: " + str(moves))
         return moves
 
     def move(self, move):
