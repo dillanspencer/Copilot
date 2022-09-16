@@ -72,7 +72,10 @@ def heuristic(mySnake, enemySnakes, food):
         # check if snake hit enemy body
         for point in enemySnake.body:
             if myHead.x == point.x and myHead.y == point.y:
-                return -math.inf
+                if len(enemySnake.body) >= len(mySnake.body):
+                    return -math.inf
+                else:
+                    return math.inf
         myDistance -= myHead.distance(enemySnake.head)
     
     return myDistance
