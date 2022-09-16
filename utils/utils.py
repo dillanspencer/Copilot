@@ -11,6 +11,9 @@ class Point():
         self.x = x
         self. y = y
 
+    def distance(self, point) -> int:
+        return abs(self.x - point.x) + abs(self.y - point.y)
+
     def getPoint(self) -> tuple:
         return (self.x, self.y)
 
