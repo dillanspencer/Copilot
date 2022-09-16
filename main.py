@@ -1,6 +1,6 @@
 import typing
 from models.board import Board
-from utils.utils import Move
+from utils.utils import Move, Point
 from utils.snake import Snake
 from ai.minmax import *
 
@@ -26,7 +26,7 @@ def end(game_state: typing.Dict):
 def move(game_state: typing.Dict):
     mySnake = Snake(game_state["you"]["id"], game_state["you"]["body"])
     enemySnakes = [Snake(snake["id"], snake["body"]) for snake in game_state["board"]["snakes"] if snake["id"] != game_state["you"]["id"]]
-    food = game_state["board"]["food"]
+    food = [Point(game_state["board"]["food"][i]["x"], game_state["board"]["food"][i]["y"]) for i in range(len(game_state["board"]["food"]))]
 
     board = Board(11, 11, enemySnakes, food, mySnake)
     move = iterativeDeepening(mySnake, enemySnakes=enemySnakes, food=food, depth=10)
