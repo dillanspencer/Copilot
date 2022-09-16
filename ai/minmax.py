@@ -24,7 +24,7 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth) -> Move:
     if depth == 0:
         return heuristic(mySnake, enemySnakes, food)
     bestValue = -math.inf
-    bestMove = Move.UP
+    bestMove = None
     for move in mySnake.getMoves():
         newMySnake = copy.deepcopy(mySnake)
         newMySnake.move(move)
@@ -72,5 +72,6 @@ def heuristic(mySnake, enemySnakes, food):
     foodDistance = 0
     for food in food:
         foodDistance += myHead.distance(food)
+    print("heuristic", myDistance - enemyDistance - foodDistance)
     return myDistance - enemyDistance - foodDistance
     
