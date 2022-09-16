@@ -18,9 +18,9 @@ class Snake():
         print("HEAD: ", self.head.x, self.head.y)
         print("NECK: ", self.neck.x, self.neck.y)
         if self.head.x > self.neck.x:
-            moves.append(Move.LEFT)
-        if self.head.x < self.neck.x:
             moves.append(Move.RIGHT)
+        if self.head.x < self.neck.x:
+            moves.append(Move.LEFT)
         if self.head.y > self.neck.y:
             moves.append(Move.UP)
         if self.head.y < self.neck.y:
@@ -33,9 +33,9 @@ class Snake():
         if move == Move.RIGHT:
             self.head.x += 1
         if move == Move.UP:
-            self.head.y -= 1
-        if move == Move.DOWN:
             self.head.y += 1
+        if move == Move.DOWN:
+            self.head.y -= 1
         self.body.insert(0, self.head)
         self.body.pop()
         self.neck = self.body[1]
