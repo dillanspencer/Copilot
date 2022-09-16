@@ -17,11 +17,9 @@ def info() -> typing.Dict:
 
 def start(game_state: typing.Dict):
     print("Starting game...")
-    print(game_state)
 
 def end(game_state: typing.Dict):
     print("Ending game...")
-    print(game_state)
 
 def move(game_state: typing.Dict):
     mySnake = Snake(game_state["you"]["id"], game_state["you"]["body"])
@@ -32,8 +30,6 @@ def move(game_state: typing.Dict):
     move = iterativeDeepening(mySnake, enemySnakes=enemySnakes, food=food, depth=6)
 
     return move.value
-
-
 
 
 if __name__ == '__main__':
