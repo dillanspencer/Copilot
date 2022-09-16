@@ -22,6 +22,7 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta):
         newMySnake.move(move)
         newEnemySnakes = copy.deepcopy(enemySnakes)
         for enemySnake in newEnemySnakes:
+            print(enemySnake.getMoves())
             enemySnake.move(random.choice(enemySnake.getMoves()))
         value = minN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta)
         if value > bestValue:
