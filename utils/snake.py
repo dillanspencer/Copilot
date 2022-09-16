@@ -1,12 +1,12 @@
 # Dillan Spencer
 # Snake for battle snake
-from .utils import Move
+from .utils import Move, Point
 import json
 
 class Snake():
     
     def __init__(self, body):
-        self.body = [json.loads(point) for point in body]
+        self.body = [Point(point["x"], point["y"]) for point in body]
         self.head = json.loads(body[0])
         self.neck = json.loads(body[1])
         self.tail = json.loads(body[len(body) - 1])
