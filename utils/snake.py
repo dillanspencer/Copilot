@@ -15,6 +15,8 @@ class Snake():
 
     def getMoves(self):
         moves = []
+        print("HEAD: ", self.head.x, self.head.y)
+        print("NECK: ", self.neck.x, self.neck.y)
         if self.head.x > self.neck.x:
             moves.append(Move.LEFT)
         if self.head.x < self.neck.x:
@@ -23,7 +25,6 @@ class Snake():
             moves.append(Move.UP)
         if self.head.y < self.neck.y:
             moves.append(Move.DOWN)
-        print("MOVES: " + str(moves))
         return moves
 
     def move(self, move):
