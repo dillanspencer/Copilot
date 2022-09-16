@@ -58,4 +58,4 @@ def minN(mySnake, enemySnakes, food, depth, alpha, beta):
 def heuristic(mySnake, enemySnakes, food):
     closestFood = min([mySnake.head.distance(foodPoint) for foodPoint in food])
     closestEnemy = min([mySnake.head.distance(enemySnake.head) for enemySnake in enemySnakes])
-    return 1 / closestFood + 1 / closestEnemy + mySnake.length
+    return 1 / closestFood + 1 / closestEnemy + 1 + mySnake.length
