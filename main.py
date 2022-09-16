@@ -25,7 +25,7 @@ def end(game_state: typing.Dict):
 
 def move(game_state: typing.Dict):
     mySnake = Snake(game_state["you"]["body"])
-    enemySnakes = [Snake(snake) for snake in game_state["board"]["snakes"] if snake["id"] != game_state["you"]["id"]]
+    enemySnakes = [Snake(snake["body"]) for snake in game_state["board"]["snakes"] if snake["id"] != game_state["you"]["id"]]
     food = game_state["board"]["food"]
 
     board = Board(11, 11, enemySnakes, food, mySnake)
