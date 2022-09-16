@@ -1,6 +1,6 @@
 # Dillan Spencer
 # Snake for battle snake
-from ..utils.utils import Move
+from .utils import Move
 
 class Snake():
     

@@ -1,8 +1,7 @@
 import random
 import copy
 import math
-from ..models.snake import Snake
-from utils.utils import Move
+from utils.snake import Snake
 
 # iterative deepening algorithm using monte carlo tree search
 def iterativeDeepening(snake: Snake, enemySnakes, food, depth):

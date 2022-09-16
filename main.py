@@ -1,7 +1,7 @@
 import typing
 from models.board import Board
 from utils.utils import Move
-from models.snake import Snake
+from utils.snake import Snake
 from ai.minmax import *
 
 def info() -> typing.Dict:
