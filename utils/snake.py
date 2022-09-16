@@ -10,9 +10,7 @@ class Snake():
         self.body = [Point(point["x"], point["y"]) for point in body]
         self.head = Point(body[0]["x"], body[0]["y"])
         self.neck = Point(body[1]["x"], body[1]["y"])
-        self.tail = Point(body[len(body) - 1]["x"], body[len(body) - 1]["y"])
-        self.alive = True
-        self.score = 0
+        self.tail = Point(body[len(body) - 1]["x"], body[len(body) - 1]["y"])  
 
     def getMoves(self):
         moves = []
@@ -40,13 +38,6 @@ class Snake():
         self.neck = self.body[1]
         self.tail = self.body[len(self.body) - 1]
 
-    def eat(self):
-        self.body.append(self.tail)
-        self.score += 1
-
-    def die(self):
-        self.alive = False
-        return self.body    
 
     
 
