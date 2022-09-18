@@ -15,11 +15,11 @@ class Snake():
 
     def getMoves(self, enemySnakes=[]):
         moves = []
-        if self.head.x >= self.neck.x and Point(self.head.x + 1, self.head.y) not in self.body and self.head.x < 11:          
+        if self.head.x >= self.neck.x and Point(self.head.x + 1, self.head.y) not in self.body and self.head.x < 10:          
             moves.append(Move.RIGHT)
         if self.head.x <= self.neck.x and Point(self.head.x - 1, self.head.y) not in self.body and self.head.x > 0:
             moves.append(Move.LEFT)
-        if self.head.y >= self.neck.y and Point(self.head.x, self.head.y + 1) not in self.body and self.head.y < 11:
+        if self.head.y >= self.neck.y and Point(self.head.x, self.head.y + 1) not in self.body and self.head.y < 10:
             moves.append(Move.UP)
         if self.head.y <= self.neck.y and Point(self.head.x, self.head.y - 1) not in self.body and self.head.y > 0:
             moves.append(Move.DOWN)
