@@ -17,9 +17,8 @@ def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
 # maxN algorithm with alpha beta pruning
 def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth) -> Move:
     if depth == 0 or time.time() - returnDepth > 0.135:
-        value = heuristic(mySnake, enemySnakes, food)
-        print(value)
-        return value
+        heuristicValue = heuristic(mySnake, enemySnakes, food)
+        return heuristicValue
     bestValue = -math.inf
     bestMove = None
     for move in mySnake.getMoves(enemySnakes):
