@@ -26,16 +26,16 @@ class Snake():
 
         if enemySnakes:
             for enemySnake in enemySnakes:
-                if Point(self.head.x + 1, self.head.y) in enemySnake.body:
+                if Point(self.head.x + 1, self.head.y) in enemySnake.body[1:]:
                     if Move.RIGHT in moves:
                         moves.remove(Move.RIGHT)
-                if Point(self.head.x - 1, self.head.y) in enemySnake.body:
+                if Point(self.head.x - 1, self.head.y) in enemySnake.body[1:]:
                     if Move.LEFT in moves:
                         moves.remove(Move.LEFT)
-                if Point(self.head.x, self.head.y + 1) in enemySnake.body:
+                if Point(self.head.x, self.head.y + 1) in enemySnake.body[1:]:
                     if Move.UP in moves:
                         moves.remove(Move.UP)
-                if  Point(self.head.x, self.head.y - 1) in enemySnake.body:
+                if  Point(self.head.x, self.head.y - 1) in enemySnake.body[1:]:
                     if Move.DOWN in moves:
                         moves.remove(Move.DOWN)
         return moves
