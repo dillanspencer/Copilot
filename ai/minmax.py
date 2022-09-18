@@ -74,5 +74,5 @@ def heuristic(mySnake, enemySnakes, food):
         
 
     
-    return -smallPoint
+    return -foodDist
     
