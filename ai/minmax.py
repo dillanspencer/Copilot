@@ -66,13 +66,12 @@ def heuristic(mySnake, enemySnakes, food):
     for enemySnake in enemySnakes:
         # check if snake hit enemy body
         if mySnake.head.distance(enemySnake.head) == 0:
+            print("RUN into enemy head")
             return -math.inf
 
     foodDist = myHead.distance(food[0])
     for point in food:
         foodDist = min(foodDist, mySnake.head.distance(point))
         
-
-    
     return -foodDist
     
