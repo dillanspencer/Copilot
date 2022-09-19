@@ -5,13 +5,35 @@ import time
 from utils.snake import Snake
 from utils.utils import Move, Point
 
+class MinMaxThread(Thread):
+    def __init__(self, group=None, target=None, name=None,
+                 args=(), kwargs={}, Verbose=None):
+        Thread.__init__(self, group, target, name, args, kwargs)
+        self._return = None
+
+    def run(self):
+        if self._target is not None:
+            self._return = self._target(*self._args,
+                                                **self._kwargs)
+    def join(self, *args):
+        Thread.join(self, *args)
+        return self._return
+
 # iterative deepening algorithm using maxN algorithm with alpha beta pruning
 def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
     bestMove = Move.RIGHT
     startTime = time.time()
     alpha = -math.inf
     beta = math.inf
-    bestMove = maxN(mySnake, enemySnakes, food, depth, alpha, beta, startTime)
+    thread = []
+    for i in range(1, depth):
+        moveThread = MinMaxThread(target=maxN, args=(mySnake, enemySnakes, food, i, alpha, beta, startTime))
+        moveThread.start()
+        threads.append(moveThread)
+
+    for i in threads:
+        val = i.join()
+        print("BEST MOVE: ", i, val)
     return bestMove
 
 # maxN algorithm with alpha beta pruning
