@@ -24,6 +24,7 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
     ttEntry = transpositionLookup(transpositionTable, boardHash)
     if ttEntry is not None and ttEntry["depth"] >= depth:
         if ttEntry["flag"] == Entry.EXACT:
+            print("Exact: ",ttEntry["depth"], depth, maxDepth)
             return ttEntry["value"]
         if ttEntry["flag"] == Entry.LOWERBOUND:
             print("LOWER")
