@@ -26,15 +26,7 @@ def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
     startTime = time.time()
     alpha = -math.inf
     beta = math.inf
-    threads = []
-    for i in range(1, depth):
-        thread = MinMaxThread(target=maxN, args=(mySnake, enemySnakes, food, i, alpha, beta, startTime))
-        thread.start()
-        threads.append(thread)
-    
-    for i in threads:
-        bestMove = threads[i].join()
-        print("BEST MOVE: ", i, val)
+    bestMove = maxN(mySnake, enemySnakes, food, depth, alpha, beta, startTime)
     return bestMove
 
 # maxN algorithm with alpha beta pruning
@@ -48,8 +40,6 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth) -> Move:
         newMySnake = copy.deepcopy(mySnake)
         newMySnake.move(move)
         newEnemySnakes = copy.deepcopy(enemySnakes)
-        for enemySnake in newEnemySnakes:
-            enemySnake.move(random.choice(enemySnake.getMoves()))
         value = minN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnDepth)
         if value > bestValue:
             bestValue = value
