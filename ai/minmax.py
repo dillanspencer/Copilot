@@ -35,7 +35,7 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
         if alpha >= beta:
             return ttEntry["value"]
 
-    if depth == 0 or time.time() - returnTime > 0.150:
+    if depth == 0 or time.time() - returnTime > 0.350:
         heuristicValue = heuristic(mySnake, enemySnakes, food)
         return heuristicValue
 
@@ -87,7 +87,7 @@ def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
             beta = min(beta, ttEntry.value)
         if alpha >= beta:
             return ttEntry["value"]
-    if depth == 0 or time.time() - returnTime > 0.150:
+    if depth == 0 or time.time() - returnTime > 0.350:
         return heuristic(mySnake, enemySnakes, food)
     bestValue = math.inf
     for enemySnake in enemySnakes:
