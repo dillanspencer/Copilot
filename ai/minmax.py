@@ -32,7 +32,7 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnTime) -> Move:
         alpha = max(alpha, bestValue)
         if alpha >= beta:
             break
-    if depth == 8:
+    if depth == 10:
         return bestMove
     return bestValue
 
