@@ -32,3 +32,8 @@ class Tile(Enum):
     WALL = 'w'
     HEAD = 'h'
     ME = 'm'
+
+class Entry(Enum):
+    EXACT = 0
+    LOWERBOUND = 1
+    UPPERBOUND = 2

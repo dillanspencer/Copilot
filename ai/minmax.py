@@ -5,28 +5,28 @@ import time
 from utils.snake import Snake
 from utils.utils import Move, Point
 
+
 # iterative deepening algorithm using maxN algorithm with alpha beta pruning
 def iterativeDeepening(board, mySnake, enemySnakes, food, depth) -> Move:
     bestMove = Move.RIGHT
     startTime = time.time()
-    alpha = -math.inf
-    beta = math.inf
-    print(hash(board))
-    bestMove = maxN(mySnake, enemySnakes, food, depth, alpha, beta, startTime)
+    transpositionTable = {}
+    bestMove = maxN(board, mySnake, enemySnakes, food, depth, -math.inf, math.inf, transpositionTable, startTime)
     return bestMove
 
 # maxN algorithm with alpha beta pruning
-def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnTime) -> Move:
+def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTable, returnTime) -> Move:
     if depth == 0 or time.time() - returnTime > 0.150:
         heuristicValue = heuristic(mySnake, enemySnakes, food)
         return heuristicValue
+    ttEntry = 
     bestValue = -math.inf
     bestMove = None
     for move in mySnake.getMoves(enemySnakes):
         newMySnake = copy.deepcopy(mySnake)
         newMySnake.move(move)
         newEnemySnakes = copy.deepcopy(enemySnakes)
-        value = minN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnTime)
+        value = minN(board, newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, transpositionTable, returnTime)
         if value > bestValue:
             bestValue = value
             bestMove = move
@@ -38,7 +38,7 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnTime) -> Move:
     return bestValue
 
 # minN algorithm with alpha beta pruning
-def minN(mySnake, enemySnakes, food, depth, alpha, beta, returnTime):
+def minN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTable, returnTime):
     if depth == 0:
         return heuristic(mySnake, enemySnakes, food)
     bestValue = math.inf
@@ -48,7 +48,7 @@ def minN(mySnake, enemySnakes, food, depth, alpha, beta, returnTime):
             newEnemySnakes = copy.deepcopy(enemySnakes)
             for enemySnake in newEnemySnakes:
                 enemySnake.move(move)
-            value = maxN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnTime)
+            value = maxN(board, newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, transpositionTable, returnTime)
             bestValue = min(bestValue, value)
             beta = min(beta, bestValue)
             if alpha >= beta:
@@ -75,4 +75,11 @@ def heuristic(mySnake, enemySnakes, food):
         foodDist = min(foodDist, mySnake.head.distance(point))
         
     return -foodDist
+
+def transpositionLookup(transpositionTable, key):
+    try:
+        val = transpositionTable[key]
+        return val
+    except:
+        return None
     
