@@ -65,9 +65,9 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
         else:
             ttEntry["flag"] = Entry.EXACT
             ttEntry["depth"] = depth
+            transpositionTable[boardHash] = ttEntry
             return bestMove
 
-        transpositionTable[boardHash] = ttEntry
 
     if depth == maxDepth:
         return bestMove
