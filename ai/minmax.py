@@ -26,7 +26,7 @@ def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
     startTime = time.time()
     alpha = -math.inf
     beta = math.inf
-    threads = [None] * depth - 1
+    threads = [None] * depth
     for i in range(1, depth):
         threads[i] = MinMaxThread(target=maxN, args=(mySnake, enemySnakes, food, i, alpha, beta, startTime))
         threads[i].start()
