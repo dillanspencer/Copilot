@@ -15,8 +15,8 @@ def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
     return bestMove
 
 # maxN algorithm with alpha beta pruning
-def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth) -> Move:
-    if depth == 0 or time.time() - returnDepth > 0.135:
+def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnTime) -> Move:
+    if depth == 0 or time.time() - returnTime > 0.135:
         heuristicValue = heuristic(mySnake, enemySnakes, food)
         return heuristicValue
     bestValue = -math.inf
@@ -25,19 +25,19 @@ def maxN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth) -> Move:
         newMySnake = copy.deepcopy(mySnake)
         newMySnake.move(move)
         newEnemySnakes = copy.deepcopy(enemySnakes)
-        value = minN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnDepth)
+        value = minN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnTime)
         if value > bestValue:
             bestValue = value
             bestMove = move
         alpha = max(alpha, bestValue)
         if alpha >= beta:
             break
-    if depth == 8 :
+    if depth == 8:
         return bestMove
     return bestValue
 
 # minN algorithm with alpha beta pruning
-def minN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth):
+def minN(mySnake, enemySnakes, food, depth, alpha, beta, returnTime):
     if depth == 0:
         return heuristic(mySnake, enemySnakes, food)
     bestValue = math.inf
@@ -47,7 +47,7 @@ def minN(mySnake, enemySnakes, food, depth, alpha, beta, returnDepth):
             newEnemySnakes = copy.deepcopy(enemySnakes)
             for enemySnake in newEnemySnakes:
                 enemySnake.move(move)
-            value = maxN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnDepth)
+            value = maxN(newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnTime)
             bestValue = min(bestValue, value)
             beta = min(beta, bestValue)
             if alpha >= beta:
