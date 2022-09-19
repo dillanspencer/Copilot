@@ -26,8 +26,8 @@ def move(game_state: typing.Dict):
     enemySnakes = [Snake(snake["id"], snake["body"]) for snake in game_state["board"]["snakes"] if snake["id"] != game_state["you"]["id"]]
     food = [Point(game_state["board"]["food"][i]["x"], game_state["board"]["food"][i]["y"]) for i in range(len(game_state["board"]["food"]))]
 
-    # board = Board(11, 11, enemySnakes, food, mySnake)
-    move = iterativeDeepening(mySnake, enemySnakes=enemySnakes, food=food, depth=10)
+    board = Board(11, 11, enemySnakes, food, mySnake)
+    move = iterativeDeepening(board, mySnake, enemySnakes=enemySnakes, food=food, depth=10)
     if move is None:
         move = random.choice(mySnake.getMoves(enemySnakes))
 
