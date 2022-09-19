@@ -12,7 +12,7 @@ def iterativeDeepening(board, mySnake, enemySnakes, food, depth) -> Move:
     startTime = time.time()
     transpositionTable = {}
     for i in range(1, depth):
-        if time.time() - startTime > 0.150:
+        if time.time() - startTime > 0.350:
             return bestMove
         bestMove = maxN(board, mySnake, enemySnakes, food, i, i,-math.inf, math.inf, transpositionTable, startTime)
     return bestMove
@@ -64,6 +64,7 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
             ttEntry["flag"] = Entry.LOWERBOUND
         else:
             ttEntry["flag"] = Entry.EXACT
+            ttEntry["depth"] = depth
             return bestMove
 
         transpositionTable[boardHash] = ttEntry
