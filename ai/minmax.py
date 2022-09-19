@@ -4,6 +4,7 @@ import math
 import time
 from utils.snake import Snake
 from utils.utils import Move, Point
+from threading import Thread
 
 class MinMaxThread(Thread):
     def __init__(self, group=None, target=None, name=None,
