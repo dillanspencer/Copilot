@@ -17,6 +17,7 @@ class Board():
         for y in range(self.height):
             for x in range(self.width):
                 boardHash += str(x) + str(y) + self.board[x][y].value
+        return boardHash
         
     def loadBoard(self):
         for snake in self.snakes:
