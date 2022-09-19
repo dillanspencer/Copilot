@@ -64,7 +64,7 @@ def heuristic(mySnake, enemySnakes, food):
     for enemySnake in enemySnakes:
         # check if snake hit enemy body
         if mySnake.head.distance(enemySnake.head) == 0:
-            print("RUN into enemy head")
+            print(len(mySnake.body), len(enemySnake.body))
             return -math.inf
 
     foodDist = myHead.distance(food[0])
