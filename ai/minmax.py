@@ -22,9 +22,9 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
     alphaOrig = alpha
     boardHash = hash(board)
     ttEntry = transpositionLookup(transpositionTable, boardHash)
-    if ttEntry is not None:
+    if ttEntry is not None and ttEntry["depth"] >= depth:
         if ttEntry["flag"] == Entry.EXACT:
-            return ttEntry["move"]
+            return ttEntry["value"]
         if ttEntry["flag"] == Entry.LOWERBOUND:
             print("LOWER")
             alpha = max(alpha, ttEntry.value)
@@ -32,7 +32,7 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
             print("UPPER")
             beta = min(beta, ttEntry.value)
         if alpha >= beta:
-            return ttEntry["move"]
+            return ttEntry["value"]
 
     if depth == 0 or time.time() - returnTime > 0.150:
         heuristicValue = heuristic(mySnake, enemySnakes, food)
@@ -78,7 +78,7 @@ def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
     betaOrig = beta
     boardHash = hash(board)
     ttEntry = transpositionLookup(transpositionTable, boardHash)
-    if ttEntry is not None:
+    if ttEntry is not None and ttEntry["depth"] >= depth:
         if ttEntry["flag"] == Entry.EXACT:
             return ttEntry["value"]
         if ttEntry["flag"] == Entry.LOWERBOUND:
