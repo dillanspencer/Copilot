@@ -31,7 +31,7 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
             beta = min(beta, ttEntry.value)
         if alpha >= beta:
             return ttEntry["value"]
-            
+
     if depth == 0 or time.time() - returnTime > 0.150:
         heuristicValue = heuristic(mySnake, enemySnakes, food)
         return heuristicValue
@@ -70,7 +70,19 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
 
 # minN algorithm with alpha beta pruning
 def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transpositionTable, returnTime):
-    if depth == 0:
+    betaOrig = beta
+    boardHash = hash(board)
+    ttEntry = transpositionLookup(transpositionTable, boardHash)
+    if ttEntry is not None:
+        if ttEntry["flag"] == Entry.EXACT:
+            return ttEntry["value"]
+        if ttEntry["flag"] == Entry.LOWERBOUND:
+            alpha = max(alpha, ttEntry.value)
+        if ttEntry["flag"] == Entry.UPPERBOUND:
+            beta = min(beta, ttEntry.value)
+        if alpha >= beta:
+            return ttEntry["value"]
+    if depth == 0 or time.time() - returnTime > 0.150:
         return heuristic(mySnake, enemySnakes, food)
     bestValue = math.inf
     for enemySnake in enemySnakes:
@@ -86,6 +98,19 @@ def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
             beta = min(beta, bestValue)
             if alpha >= beta:
                 break
+
+        # transposition
+        ttEntry = {}
+        ttEntry["value"] = bestValue
+        if bestValue <= alphaOrig:
+            ttEntry["flag"] = Entry.UPPERBOUND
+        if bestValue >= beta:
+            ttEntry["flag"] = Entry.LOWERBOUND
+        else:
+            ttEntry["flag"] = Entry.EXACT
+
+        transpositionTable[boardHash] = ttEntry
+
     return bestValue
          
 
