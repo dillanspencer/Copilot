@@ -98,7 +98,7 @@ def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
                 enemySnake.move(move)
             newBoard = copy.deepcopy(board)
             newBoard.updateBoard(mySnake, enemySnakes, food)
-            value = maxN(board, newMySnake, newEnemySnakes, food, depth - 1, maxDepth, alpha, beta, transpositionTable, returnTime)
+            value = maxN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, maxDepth, alpha, beta, transpositionTable, returnTime)
             bestValue = min(bestValue, value)
             beta = min(beta, bestValue)
             if alpha >= beta:
@@ -113,7 +113,7 @@ def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
             ttEntry["flag"] = Entry.LOWERBOUND
         else:
             ttEntry["flag"] = Entry.EXACT
-        transpositionTable[boardHash] = ttEntry
+            transpositionTable[boardHash] = ttEntry
 
     return bestValue
          
