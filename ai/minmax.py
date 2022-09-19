@@ -32,7 +32,7 @@ def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
         threads[i].start()
         
 
-    for i in range(len(threads)):
+    for i in range(len(threads) - 1):
         val = threads[i].join
         print("BEST MOVE: ", i, val)
     return bestMove
