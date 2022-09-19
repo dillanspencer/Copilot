@@ -106,9 +106,9 @@ def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
         # transposition
         ttEntry = {}
         ttEntry["value"] = bestValue
-        if bestValue <= alphaOrig:
+        if bestValue <= alpha:
             ttEntry["flag"] = Entry.UPPERBOUND
-        if bestValue >= beta:
+        if bestValue >= betaOrig:
             ttEntry["flag"] = Entry.LOWERBOUND
         else:
             ttEntry["flag"] = Entry.EXACT
