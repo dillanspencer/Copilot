@@ -4,7 +4,7 @@ import math
 import time
 from utils.snake import Snake
 from utils.utils import Move, Point
-from threading import Thread
+from multiprocessing.pool import ThreadPool
 
 class MinMaxThread(Thread):
     def __init__(self, group=None, target=None, name=None,
@@ -26,14 +26,14 @@ def iterativeDeepening(mySnake, enemySnakes, food, depth) -> Move:
     startTime = time.time()
     alpha = -math.inf
     beta = math.inf
-    threads = [None] * depth
+    threads = []
     for i in range(1, depth):
-        threads[i] = MinMaxThread(target=maxN, args=(mySnake, enemySnakes, food, i, alpha, beta, startTime))
-        threads[i].start()
-        
-
-    for i in range(len(threads) - 1):
-        val = threads[i].join
+        thread = MinMaxThread(target=maxN, args=(mySnake, enemySnakes, food, i, alpha, beta, startTime))
+        thread.start()
+        threads.append(thread)
+    
+    for i in threads:
+        bestMove = threads[i].join()
         print("BEST MOVE: ", i, val)
     return bestMove
 
