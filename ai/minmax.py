@@ -41,7 +41,7 @@ def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTab
         newEnemySnakes = copy.deepcopy(enemySnakes)
         newBoard = copy.deepcopy(board)
         newBoard.updateBoard(mySnake, enemySnakes, food)
-        value = minN(neBoard, newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, transpositionTable, returnTime)
+        value = minN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, transpositionTable, returnTime)
         if value > bestValue:
             bestValue = value
             bestMove = move
