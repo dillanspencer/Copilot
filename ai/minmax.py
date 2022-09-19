@@ -113,6 +113,7 @@ def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
             ttEntry["flag"] = Entry.LOWERBOUND
         else:
             ttEntry["flag"] = Entry.EXACT
+            ttEntry["depth"] = depth
             transpositionTable[boardHash] = ttEntry
 
     return bestValue
