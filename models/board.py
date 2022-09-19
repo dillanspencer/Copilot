@@ -30,7 +30,7 @@ class Board():
             self.board[food.x][food.y] = Tile.FOOD
 
     def updateBoard(self, mySnake, enemySnakes, food):
-        self.board = [[Tile.EMPTY for x in range(width)] for y in range(height)]
+        self.board = [[Tile.EMPTY for x in range(self.width)] for y in range(self.height)]
         for point in mySnake.body:
             self.board[point.y][point.x] = Tile.SNAKE
         self.board[mySnake.head.y][mySnake.head.x] = Tile.ME
