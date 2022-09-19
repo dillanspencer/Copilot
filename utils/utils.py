@@ -26,9 +26,9 @@ class Food(Point):
 
 
 class Tile(Enum):
-    EMPTY = 0
-    FOOD = 1
-    SNAKE = 2
-    WALL = 3
-    HEAD = 4
-    ME = 5
+    EMPTY = 'e'
+    FOOD = 'f'
+    SNAKE = 's'
+    WALL = 'w'
+    HEAD = 'h'
+    ME = 'm'

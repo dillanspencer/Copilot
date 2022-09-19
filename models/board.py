@@ -13,7 +13,10 @@ class Board():
         self.loadBoard()
 
     def __hash__(self):
-        return hash(self.board)
+        boardHash = ""
+        for y in range(self.height):
+            for x in range(self.width):
+                boardHash += str(x) + str(y) + self.board[x][y].value
         
     def loadBoard(self):
         for snake in self.snakes:
@@ -26,6 +29,7 @@ class Board():
             self.board[food.x][food.y] = Tile.FOOD
 
     def updateBoard(self, mySnake, enemySnakes, food):
+        self.board = [[Tile.EMPTY for x in range(width)] for y in range(height)]
         for point in mySnake.body:
             self.board[point.y][point.x] = Tile.SNAKE
         self.board[mySnake.head.y][mySnake.head.x] = Tile.ME
