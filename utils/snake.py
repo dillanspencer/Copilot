@@ -38,7 +38,6 @@ class Snake():
                 if  Point(self.head.x, self.head.y - 1) in enemySnake.body[1:]:
                     if Move.DOWN in moves:
                         moves.remove(Move.DOWN)
-            print(moves)
         return moves
 
     
