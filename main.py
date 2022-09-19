@@ -28,6 +28,8 @@ def move(game_state: typing.Dict):
 
     # board = Board(11, 11, enemySnakes, food, mySnake)
     move = iterativeDeepening(mySnake, enemySnakes=enemySnakes, food=food, depth=8)
+    if move is None:
+        move = random.choice(mySnake.getMoves(enemySnakes))
 
     return {"move": move.value}
 
