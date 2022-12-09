@@ -51,18 +51,18 @@ def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTab
         if alpha >= beta:
             break
 
-        # transposition
-        ttEntry = {}
-        ttEntry["value"] = bestValue
-        ttEntry["move"] = bestMove
-        if bestValue <= alphaOrig:
-            ttEntry["flag"] = Entry.UPPERBOUND
-        if bestValue >= beta:
-            ttEntry["flag"] = Entry.LOWERBOUND
-        else:
-            ttEntry["flag"] = Entry.EXACT
-            ttEntry["depth"] = depth
-            transpositionTable[boardHash] = ttEntry
+    # transposition
+    ttEntry = {}
+    ttEntry["value"] = bestValue
+    ttEntry["move"] = bestMove
+    if bestValue <= alphaOrig:
+        ttEntry["flag"] = Entry.UPPERBOUND
+    if bestValue >= beta:
+        ttEntry["flag"] = Entry.LOWERBOUND
+    else:
+        ttEntry["flag"] = Entry.EXACT
+        ttEntry["depth"] = depth
+        transpositionTable[boardHash] = ttEntry
 
     return bestMove
 
