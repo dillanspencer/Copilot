@@ -8,36 +8,32 @@ from utils.utils import Move, Point, Entry
 
 # iterative deepening algorithm using maxN algorithm with alpha beta pruning
 def iterativeDeepening(board, mySnake, enemySnakes, food, depth) -> Move:
-    bestMove = Move.RIGHT
+    bestMove = None
     startTime = time.time()
     transpositionTable = {}
     for i in range(1, depth):
         if time.time() - startTime > 0.275:
-            return bestMove
-        bestMove = maxN(board, mySnake, enemySnakes, food, i, i,-math.inf, math.inf, transpositionTable, startTime)
+            break
+        bestMove = maxN(board, mySnake, enemySnakes, food, i, -math.inf, math.inf, transpositionTable, startTime)
     return bestMove
 
 # maxN algorithm with alpha beta pruning
-def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transpositionTable, returnTime) -> Move:
+def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTable, returnTime) -> Move:
     alphaOrig = alpha
     boardHash = hash(board)
     ttEntry = transpositionLookup(transpositionTable, boardHash)
     if ttEntry is not None and ttEntry["depth"] >= depth:
         if ttEntry["flag"] == Entry.EXACT:
-            print("Exact: ",ttEntry["depth"], depth, maxDepth)
-            return ttEntry["value"]
+            return ttEntry["move"]
         if ttEntry["flag"] == Entry.LOWERBOUND:
-            print("LOWER")
             alpha = max(alpha, ttEntry.value)
         if ttEntry["flag"] == Entry.UPPERBOUND:
-            print("UPPER")
             beta = min(beta, ttEntry.value)
         if alpha >= beta:
-            return ttEntry["value"]
+            return ttEntry["move"]
 
     if depth == 0 or time.time() - returnTime > 0.350:
-        heuristicValue = heuristic(mySnake, enemySnakes, food)
-        return heuristicValue
+        return mySnake.getMoves(enemySnakes)[0]
 
     bestValue = -math.inf
     bestMove = None
@@ -47,7 +43,7 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
         newEnemySnakes = copy.deepcopy(enemySnakes)
         newBoard = copy.deepcopy(board)
         newBoard.updateBoard(mySnake, enemySnakes, food)
-        value = minN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, maxDepth, alpha, beta, transpositionTable, returnTime)
+        value = minN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, transpositionTable, returnTime)
         if value > bestValue:
             bestValue = value
             bestMove = move
@@ -68,13 +64,10 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
             ttEntry["depth"] = depth
             transpositionTable[boardHash] = ttEntry
 
-    if depth == maxDepth:
-        print("reached end")
-        return bestMove
-    return bestValue
+    return bestMove
 
 # minN algorithm with alpha beta pruning
-def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transpositionTable, returnTime):
+def minN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTable, returnTime):
     betaOrig = beta
     boardHash = hash(board)
     ttEntry = transpositionLookup(transpositionTable, boardHash)
@@ -93,30 +86,34 @@ def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, transp
     for enemySnake in enemySnakes:
         for move in enemySnake.getMoves():
             newMySnake = copy.deepcopy(mySnake)
+            newMySnake.move(move)
             newEnemySnakes = copy.deepcopy(enemySnakes)
-            for enemySnake in newEnemySnakes:
-                enemySnake.move(move)
             newBoard = copy.deepcopy(board)
             newBoard.updateBoard(mySnake, enemySnakes, food)
-            value = maxN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, maxDepth, alpha, beta, transpositionTable, returnTime)
-            bestValue = min(bestValue, value)
+            value = maxN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, transpositionTable, returnTime)
+            if value < bestValue:
+                bestValue = value
             beta = min(beta, bestValue)
             if alpha >= beta:
                 break
 
-        # transposition
-        ttEntry = {}
-        ttEntry["value"] = bestValue
-        if bestValue <= alpha:
-            ttEntry["flag"] = Entry.UPPERBOUND
-        if bestValue >= betaOrig:
-            ttEntry["flag"] = Entry.LOWERBOUND
-        else:
-            ttEntry["flag"] = Entry.EXACT
-            ttEntry["depth"] = depth
-            transpositionTable[boardHash] = ttEntry
+    # transposition
+    ttEntry = {}
+    ttEntry["value"] = bestValue
+    if bestValue <= alpha:
+        ttEntry["flag"] = Entry.UPPERBOUND
+    if bestValue >= betaOrig:
+        ttEntry["flag"] = Entry.LOWERBOUND
+    else:
+        ttEntry["flag"] = Entry.EXACT
+        ttEntry["depth"] = depth
+        transpositionTable[boardHash] = ttEntry
 
     return bestValue
+
+
+
+
          
 
 # heuristic function for the minmax algorithm that takes account being close to the center and not moving out of bounds
