@@ -3,7 +3,8 @@ import copy
 import math
 import time
 from utils.snake import Snake
-from utils.utils import Move, Point, Entry
+from utils.utils import Move
+import numpy as np
 
 
 # iterative deepening algorithm using maxN algorithm with alpha beta pruning
@@ -95,6 +96,7 @@ def calculate_voronoi(snakes):
   
   # Create a list of the positions of all snakes
   snake_positions = [snake.body for snake in snakes]
+  points_array = np.array([point.getPoint() for point in snake_positions])
   
   # Create the Voronoi diagram using the scipy.spatial.Voronoi class
   voronoi = Voronoi(snake_positions)
