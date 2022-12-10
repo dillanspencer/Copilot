@@ -147,8 +147,9 @@ def find_closest_snake(region, points, snakes):
   
   # Iterate through the snakes
   for snake in snakes:
+    snake_points = np.array([p.getPoint() for p in snake.body])
     # Calculate the distance between the snake and the centroid
-    distance = ((snake.body[0] - centroid[0])**2 + (snake.body[1] - centroid[1])**2)**0.5
+    distance = ((snake_points[0] - centroid[0])**2 + (snake_points[1] - centroid[1])**2)**0.5
     
     # Update the minimum distance and closest snake if the current snake is closer
     if distance < min_distance:
