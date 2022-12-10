@@ -94,7 +94,7 @@ def calculate_voronoi(snakes):
   regions = []
   
   # Create a list of the positions of all snakes
-  snake_positions = [snake.position for snake in snakes]
+  snake_positions = [snake.body for snake in snakes]
   
   # Create the Voronoi diagram using the scipy.spatial.Voronoi class
   voronoi = Voronoi(snake_positions)
@@ -147,7 +147,7 @@ def find_closest_snake(region, points, snakes):
   # Iterate through the snakes
   for snake in snakes:
     # Calculate the distance between the snake and the centroid
-    distance = ((snake.position[0] - centroid[0])**2 + (snake.position[1] - centroid[1])**2)**0.5
+    distance = ((snake.body[0] - centroid[0])**2 + (snake.body[1] - centroid[1])**2)**0.5
     
     # Update the minimum distance and closest snake if the current snake is closer
     if distance < min_distance:
