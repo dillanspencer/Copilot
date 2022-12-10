@@ -35,7 +35,6 @@ def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTab
     if depth == 0 or time.time() - returnTime > 0.350:
         return mySnake.getMoves(enemySnakes)[0]
 
-    bestValue = -math.inf
     bestMove = None
     for move in mySnake.getMoves(enemySnakes):
         newMySnake = copy.deepcopy(mySnake)
@@ -44,30 +43,29 @@ def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTab
         newBoard = copy.deepcopy(board)
         newBoard.updateBoard(mySnake, enemySnakes, food)
         value = minN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, transpositionTable, returnTime)
-        if value > bestValue:
-            bestValue = value
-            bestMove = move
-        alpha = max(alpha, bestValue)
+        if value > bestMove:
+            bestMove = value
+        alpha = max(alpha, bestMove)
         if alpha >= beta:
             break
 
-    # transposition
-    ttEntry = {}
-    ttEntry["value"] = bestValue
-    ttEntry["move"] = bestMove
-    if bestValue <= alphaOrig:
-        ttEntry["flag"] = Entry.UPPERBOUND
-    if bestValue >= beta:
-        ttEntry["flag"] = Entry.LOWERBOUND
-    else:
-        ttEntry["flag"] = Entry.EXACT
-        ttEntry["depth"] = depth
-        transpositionTable[boardHash] = ttEntry
+        # transposition
+        ttEntry = {}
+        ttEntry["value"] = bestMove
+        ttEntry["move"] = bestMove
+        if bestMove <= alphaOrig:
+            ttEntry["flag"] = Entry.UPPERBOUND
+        if bestMove >= beta:
+            ttEntry["flag"] = Entry.LOWERBOUND
+        else:
+            ttEntry["flag"] = Entry.EXACT
+            ttEntry["depth"] = depth
+            transpositionTable[boardHash] = ttEntry
 
     return bestMove
 
 # minN algorithm with alpha beta pruning
-def minN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTable, returnTime):
+def minN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTable, returnTime) -> Move:
     betaOrig = beta
     boardHash = hash(board)
     ttEntry = transpositionLookup(transpositionTable, boardHash)
@@ -81,8 +79,9 @@ def minN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTab
         if alpha >= beta:
             return ttEntry["value"]
     if depth == 0 or time.time() - returnTime > 0.350:
-        return heuristic(mySnake, enemySnakes, food)
-    bestValue = math.inf
+        return mySnake.getMoves(enemySnakes)[0]
+
+    bestMove = None
     for enemySnake in enemySnakes:
         for move in enemySnake.getMoves():
             newMySnake = copy.deepcopy(mySnake)
@@ -91,28 +90,25 @@ def minN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTab
             newBoard = copy.deepcopy(board)
             newBoard.updateBoard(mySnake, enemySnakes, food)
             value = maxN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, transpositionTable, returnTime)
-            if value < bestValue:
-                bestValue = value
-            beta = min(beta, bestValue)
+            if value < bestMove:
+                bestMove = value
+            beta = min(beta, bestMove)
             if alpha >= beta:
                 break
 
     # transposition
     ttEntry = {}
-    ttEntry["value"] = bestValue
-    if bestValue <= alpha:
+    ttEntry["value"] = bestMove
+    if bestMove <= alpha:
         ttEntry["flag"] = Entry.UPPERBOUND
-    if bestValue >= betaOrig:
+    if bestMove >= betaOrig:
         ttEntry["flag"] = Entry.LOWERBOUND
     else:
         ttEntry["flag"] = Entry.EXACT
         ttEntry["depth"] = depth
         transpositionTable[boardHash] = ttEntry
 
-    return bestValue
-
-
-
+    return bestMove
 
          
 
