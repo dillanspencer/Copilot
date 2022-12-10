@@ -10,28 +10,15 @@ from utils.utils import Move, Point, Entry
 def iterativeDeepening(board, mySnake, enemySnakes, food, depth) -> Move:
     bestMove = None
     startTime = time.time()
-    transpositionTable = {}
     for i in range(1, depth):
         if time.time() - startTime > 0.275:
             break
-        bestMove = maxN(board, mySnake, enemySnakes, food, i, -math.inf, math.inf, transpositionTable, startTime)
+        bestMove = maxN(board, mySnake, enemySnakes, food, i, -math.inf, math.inf, startTime)
     return bestMove
 
-# maxN algorithm with alpha beta pruning
-def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTable, returnTime) -> Move:
-    alphaOrig = alpha
-    boardHash = hash(board)
-    ttEntry = transpositionLookup(transpositionTable, boardHash)
-    if ttEntry is not None and ttEntry["depth"] >= depth:
-        if ttEntry["flag"] == Entry.EXACT:
-            return ttEntry["move"]
-        if ttEntry["flag"] == Entry.LOWERBOUND:
-            alpha = max(alpha, ttEntry.value)
-        if ttEntry["flag"] == Entry.UPPERBOUND:
-            beta = min(beta, ttEntry.value)
-        if alpha >= beta:
-            return ttEntry["move"]
 
+# maxN algorithm with alpha beta pruning
+def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, returnTime) -> Move:
     if depth == 0 or time.time() - returnTime > 0.350:
         return mySnake.getMoves(enemySnakes)[0]
 
@@ -49,35 +36,10 @@ def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTab
         if alpha >= beta:
             break
 
-        # transposition
-        ttEntry = {}
-        ttEntry["value"] = bestMove
-        ttEntry["move"] = bestMove
-        if bestMove <= alphaOrig:
-            ttEntry["flag"] = Entry.UPPERBOUND
-        if bestMove >= beta:
-            ttEntry["flag"] = Entry.LOWERBOUND
-        else:
-            ttEntry["flag"] = Entry.EXACT
-            ttEntry["depth"] = depth
-            transpositionTable[boardHash] = ttEntry
-
     return bestMove
 
 # minN algorithm with alpha beta pruning
-def minN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTable, returnTime) -> Move:
-    betaOrig = beta
-    boardHash = hash(board)
-    ttEntry = transpositionLookup(transpositionTable, boardHash)
-    if ttEntry is not None and ttEntry["depth"] >= depth:
-        if ttEntry["flag"] == Entry.EXACT:
-            return ttEntry["value"]
-        if ttEntry["flag"] == Entry.LOWERBOUND:
-            alpha = max(alpha, ttEntry.value)
-        if ttEntry["flag"] == Entry.UPPERBOUND:
-            beta = min(beta, ttEntry.value)
-        if alpha >= beta:
-            return ttEntry["value"]
+def minN(board, mySnake, enemySnakes, food, depth, alpha, beta, returnTime) -> Move:
     if depth == 0 or time.time() - returnTime > 0.350:
         return mySnake.getMoves(enemySnakes)[0]
 
@@ -95,18 +57,6 @@ def minN(board, mySnake, enemySnakes, food, depth, alpha, beta, transpositionTab
             beta = min(beta, bestMove)
             if alpha >= beta:
                 break
-
-    # transposition
-    ttEntry = {}
-    ttEntry["value"] = bestMove
-    if bestMove <= alpha:
-        ttEntry["flag"] = Entry.UPPERBOUND
-    if bestMove >= betaOrig:
-        ttEntry["flag"] = Entry.LOWERBOUND
-    else:
-        ttEntry["flag"] = Entry.EXACT
-        ttEntry["depth"] = depth
-        transpositionTable[boardHash] = ttEntry
 
     return bestMove
 
