@@ -19,7 +19,7 @@ def iterativeDeepening(board, mySnake, enemySnakes, food, depth) -> Move:
 # maxN algorithm with alpha beta pruning
 def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, returnTime) -> Move:
 
-    if depth == 0 or time.time() - returnTime > 0.350:
+    if depth == 0 or time.time() - returnTime > 0.175:
         heuristicValue = heuristic(mySnake, enemySnakes, food)
         return heuristicValue
 
@@ -46,7 +46,7 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, return
 
 # minN algorithm with alpha beta pruning
 def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, returnTime):
-    if depth == 0 or time.time() - returnTime > 0.350:
+    if depth == 0 or time.time() - returnTime > 0.175:
         return heuristic(mySnake, enemySnakes, food)
     bestValue = math.inf
     for enemySnake in enemySnakes:
