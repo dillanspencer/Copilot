@@ -20,16 +20,16 @@ def iterativeDeepening(board, mySnake, enemySnakes, food, depth) -> Move:
 def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, returnTime) -> Move:
 
     if depth == 0 or time.perf_counter() - returnTime > 0.175:
-        heuristicValue = heuristic(mySnake, enemySnakes, food)
+        heuristicValue = heuristic(mySnake, enemySnakes)
         return heuristicValue
 
     bestValue = -math.inf
     bestMove = None
     for move in mySnake.getMoves(enemySnakes):
-        newMySnake = copy.copy(mySnake)
+        newMySnake = copy.deepcopy(mySnake)
         newMySnake.move(move)
-        newEnemySnakes = copy.copy(enemySnakes)
-        newBoard = copy.copy(board)
+        newEnemySnakes = copy.deepcopy(enemySnakes)
+        newBoard = copy.deepcopy(board)
         newBoard.updateBoard(mySnake, enemySnakes, food)
         value = minN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, maxDepth, alpha, beta, returnTime)
         if value > bestValue:
@@ -46,15 +46,15 @@ def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, return
 # minN algorithm with alpha beta pruning
 def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, returnTime):
     if depth == 0 or time.perf_counter() - returnTime > 0.175:
-        return heuristic(mySnake, enemySnakes, food)
+        return heuristic(mySnake, enemySnakes)
     bestValue = math.inf
     for enemySnake in enemySnakes:
         for move in enemySnake.getMoves():
-            newMySnake = copy.copy(mySnake)
-            newEnemySnakes = copy.copy(enemySnakes)
+            newMySnake = copy.deepcopy(mySnake)
+            newEnemySnakes = copy.deepcopy(enemySnakes)
             for enemySnake in newEnemySnakes:
                 enemySnake.move(move)
-            newBoard = copy.copy(board)
+            newBoard = copy.deepcopy(board)
             newBoard.updateBoard(mySnake, enemySnakes, food)
             value = maxN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, maxDepth, alpha, beta, returnTime)
             bestValue = min(bestValue, value)
@@ -66,24 +66,27 @@ def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, return
          
 
 # heuristic function for the minmax algorithm that takes account being close to the center and not moving out of bounds
-def heuristic(mySnake, enemySnakes, food):
-    myHead = mySnake.head
-    myDistance = 0
-    foodPoint = 0
-    
-    for enemySnake in enemySnakes:
-        # check if snake hit enemy body
-        if mySnake.head.distance(enemySnake.head) == 0:
-            if len(mySnake.body) > len(enemySnake.body):
-                return math.inf
-            else:
-                return -math.inf
-
-    foodDist = myHead.distance(food[0])
-    for point in food:
-        foodDist = min(foodDist, mySnake.head.distance(point))
-        
-    return -foodDist
+def heuristic(mySnake, enemySnakes):
+  # Create a list of all snakes, including the current player's snake and the enemy snakes
+  snakes = [mySnake] + enemySnakes
+  
+  # Calculate the Voronoi diagram for the list of snakes
+  voronoi = calculate_voronoi(snakes)
+  
+  # Initialize the value to 0
+  value = 0
+  
+  # Iterate through the regions in the Voronoi diagram
+  for region in voronoi:
+    # If the region is associated with the current player's snake, add the size of the region to the value
+    if region.snake == mySnake:
+      value += region.size
+    # If the region is associated with an enemy snake, subtract the size of the region from the value
+    else:
+      value -= region.size
+  
+  # Return the value
+  return value
 
 
     
