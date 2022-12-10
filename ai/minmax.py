@@ -153,7 +153,7 @@ def find_closest_snake(region, points, snakes):
     
     # Update the minimum distance and closest snake if the current snake is closer
     if distance.any() < min_distance:
-      min_distance = distance
+      min_distance = distance.any()
       closest_snake = snake
   
   # Return the closest snake
