@@ -95,7 +95,7 @@ def calculate_voronoi(snakes):
   regions = []
   
   # Create a list of the positions of all snakes
-  points_array = np.concatenate([np.array([p.getPoint() for p in snake.body]) for snake in snakes])
+  points_array = np.concatenate([np.array([p.getPoint3D() for p in snake.body]) for snake in snakes])
   
   # Create the Voronoi diagram using the scipy.spatial.Voronoi class
   voronoi = Voronoi(points_array)

@@ -20,6 +20,9 @@ class Point():
     def getPoint(self) -> tuple:
         return (self.x, self.y)
 
+    def getPoint3D(self) -> tuple:
+        return (self.x, self.y, 0)
+
 class Food(Point):
     def __init__(self, x: int, y: int) -> None:
         super().__init__(x, y)
