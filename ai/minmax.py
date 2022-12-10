@@ -8,20 +8,22 @@ from utils.utils import Move, Point, Entry
 
 # iterative deepening algorithm using maxN algorithm with alpha beta pruning
 def iterativeDeepening(board, mySnake, enemySnakes, food, depth) -> Move:
-    bestMove = None
+    bestMove = Move.RIGHT
     startTime = time.time()
     for i in range(1, depth):
-        if time.time() - startTime > 0.350:
+        if time.time() - startTime > 0.275:
             return bestMove
-        bestMove = maxN(board, mySnake, enemySnakes, food, i, i,-math.inf, math.inf, transpositionTable, startTime)
+        bestMove = maxN(board, mySnake, enemySnakes, food, i, i,-math.inf, math.inf, startTime)
     return bestMove
 
-
 # maxN algorithm with alpha beta pruning
-def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, returnTime) -> Move:
-    if depth == 0 or time.time() - returnTime > 0.350:
-        return mySnake.getMoves(enemySnakes)[0]
+def maxN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, returnTime) -> Move:
 
+    if depth == 0 or time.time() - returnTime > 0.350:
+        heuristicValue = heuristic(mySnake, enemySnakes, food)
+        return heuristicValue
+
+    bestValue = -math.inf
     bestMove = None
     for move in mySnake.getMoves(enemySnakes):
         newMySnake = copy.deepcopy(mySnake)
@@ -29,37 +31,39 @@ def maxN(board, mySnake, enemySnakes, food, depth, alpha, beta, returnTime) -> M
         newEnemySnakes = copy.deepcopy(enemySnakes)
         newBoard = copy.deepcopy(board)
         newBoard.updateBoard(mySnake, enemySnakes, food)
-        value = minN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnTime)
-        if value > bestMove:
-            bestMove = value
-        alpha = max(alpha, bestMove)
+        value = minN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, maxDepth, alpha, beta, returnTime)
+        if value > bestValue:
+            bestValue = value
+            bestMove = move
+        alpha = max(alpha, bestValue)
         if alpha >= beta:
             break
 
-    return bestMove
+    if depth == maxDepth:
+        print("reached end")
+        return bestMove
+    return bestValue
 
 # minN algorithm with alpha beta pruning
-def minN(board, mySnake, enemySnakes, food, depth, alpha, beta, returnTime) -> Move:
+def minN(board, mySnake, enemySnakes, food, depth, maxDepth, alpha, beta, returnTime):
     if depth == 0 or time.time() - returnTime > 0.350:
-        return mySnake.getMoves(enemySnakes)[0]
-
-    bestMove = None
+        return heuristic(mySnake, enemySnakes, food)
+    bestValue = math.inf
     for enemySnake in enemySnakes:
         for move in enemySnake.getMoves():
             newMySnake = copy.deepcopy(mySnake)
-            newMySnake.move(move)
             newEnemySnakes = copy.deepcopy(enemySnakes)
+            for enemySnake in newEnemySnakes:
+                enemySnake.move(move)
             newBoard = copy.deepcopy(board)
             newBoard.updateBoard(mySnake, enemySnakes, food)
-            value = maxN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, alpha, beta, returnTime)
-            if value < bestMove:
-                bestMove = value
-            beta = min(beta, bestMove)
+            value = maxN(newBoard, newMySnake, newEnemySnakes, food, depth - 1, maxDepth, alpha, beta, returnTime)
+            bestValue = min(bestValue, value)
+            beta = min(beta, bestValue)
             if alpha >= beta:
                 break
 
-    return bestMove
-
+    return bestValue
          
 
 # heuristic function for the minmax algorithm that takes account being close to the center and not moving out of bounds
@@ -83,5 +87,4 @@ def heuristic(mySnake, enemySnakes, food):
     return -foodDist
 
 
-
-
+    
